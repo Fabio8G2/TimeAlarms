@@ -66,6 +66,7 @@ public:
   OnTick_t onTickHandler;
   void updateNextTrigger();
   time_t value;
+  time_t pause;
   time_t nextTrigger;
   AlarmMode_t Mode;
 };
@@ -150,6 +151,8 @@ public:
   // low level methods
   void enable(AlarmID_t ID);                // enable the alarm to trigger
   void disable(AlarmID_t ID);               // prevent the alarm from triggering
+  void pause(AlarmID_t ID);                 // set a timer in pause
+  void play(AlarmID_t ID);                  // set in play a timer
   AlarmID_t getTriggeredAlarmId() const;          // returns the currently triggered  alarm id
   bool getIsServicing() const;                    // returns isServicing
   void write(AlarmID_t ID, time_t value);   // write the value (and enable) the alarm with the given ID
@@ -166,6 +169,9 @@ private:  // the following methods are for testing and are not documented as par
   time_t getNextTrigger(AlarmID_t ID) const;      // returns the time of scheduled alarm
   bool isAllocated(AlarmID_t ID) const;           // returns true if this id is allocated
   bool isAlarm(AlarmID_t ID) const;               // returns true if id is for a time based alarm, false if its a timer or not allocated
+  bool isEnabled(AlarmID_t ID);				            // returns true if id is enabled
+  bool isPaused(AlarmID_t ID);                    // returns true if id is paused
+
 };
 
 extern TimeAlarmsClass Alarm;  // make an instance for the user
