@@ -32,6 +32,7 @@ typedef struct {
                                // note that the current API only supports daily
                                // or weekly alarm periods
   uint8_t isEnabled      :1 ;  // the timer is only actioned if isEnabled is true
+  uint8_t isPaused       :1 ;  // 
   uint8_t isOneShot      :1 ;  // the timer will be de-allocated after trigger is processed
 } AlarmMode_t;
 
