@@ -162,10 +162,14 @@ Alarm.delay( period)
 Low level functions not usually required for typical applications:
   disable( ID);  -  prevent the alarm associated with the given ID from triggering   
   enable(ID);  -  enable the alarm 
+  pause(ID); - pause a timer
+  play(ID); - play a timer
   write(ID,  value);  -  write the value (and enable) the alarm for the given ID  
   read(ID);     - return the value for the given ID  
   readType(ID);  - return the alarm type for the given alarm ID
   getTriggeredAlarmId();   -  returns the currently triggered  alarm id, only valid in an alarm callback
+  isEnabled(ID) - returns true if ID is enabled
+  isPaused(ID) - returns true if ID is paused
 
 FAQ
 
@@ -195,7 +199,7 @@ If the system time is reset to a later time (for example one hour ahead) then al
 alarms and timers will occur one hour later.
 If the system time is set backwards (for example one hour back) then the alarms and timers will occur an hour earlier.
 If the time is reset before the time a task was scheduled, then the task will be triggered on the next service (the next call to Alarm.delay).
-This is  the expected behaviour for Alarms – tasks scheduled for a specific time of day will trigger at that time, but the affect on timers may not be intuitive. If a timer is scheduled to trigger in 5 minutes time and the clock is set ahead by one hour, that timer will not trigger until one hour and 5 minutes has elapsed.
+This is  the expected behaviour for Alarms Â– tasks scheduled for a specific time of day will trigger at that time, but the affect on timers may not be intuitive. If a timer is scheduled to trigger in 5 minutes time and the clock is set ahead by one hour, that timer will not trigger until one hour and 5 minutes has elapsed.
 
 Q: What  is the valid range of times supported by these libraries?
 A: The time library is intended to handle times from Jan 1 1970 through Jan 19 2038.
