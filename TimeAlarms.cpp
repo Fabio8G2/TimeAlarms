@@ -31,7 +31,7 @@ AlarmClass::AlarmClass()
 {
   Mode.isEnabled = Mode.isOneShot = 0;
   Mode.alarmType = dtNotAllocated;
-  value = nextTrigger = 0;
+  value = nextTrigger = pause = 0;
   onTickHandler = NULL;  // prevent a callback until this pointer is explicitly set
 }
 
@@ -73,7 +73,12 @@ void AlarmClass::updateNextTrigger()
     }
     if (Mode.alarmType == dtTimer) {
       // its a timer
-      nextTrigger = time + value;  // add the value to previous time (this ensures delay always at least Value seconds)
+      if(pause == 0)
+        nextTrigger = time + value;  // add the value to previous time (this ensures delay always at least Value seconds)
+      else{
+        nextTrigger += time - pause + 1;
+        pause = 0;
+      }  
     }
   }
 }
@@ -173,6 +178,34 @@ bool TimeAlarmsClass::isAllocated(AlarmID_t ID) const
 {
   return (ID < dtNBR_ALARMS && Alarm[ID].Mode.alarmType != dtNotAllocated);
 }
+
+bool TimeAlarmsClass::isEnabled(AlarmID_t ID)
+{
+  return (ID < dtNBR_ALARMS && Alarm[ID].Mode.isEnabled);
+}
+
+bool TimeAlarmsClass::isPaused(AlarmID_t id)
+{
+	return (id < dtNBR_ALARMS && Alarm[id].Mode.isPaused);
+}
+
+void TimeAlarmsClass::pause(AlarmID_t id)
+{
+	if(Alarm[id].Mode.alarmType == dtTimer && isEnabled(id)){
+		disable(id);
+		Alarm[id].pause = now();
+		Alarm[id].Mode.isPaused = 1;
+	}
+}
+
+void TimeAlarmsClass::play(AlarmID_t id)
+{
+	if(Alarm[id].Mode.alarmType == dtTimer && isPaused(id)){
+		Alarm[id].Mode.isPaused = 0;
+		enable(id);
+	}	
+}
+
 
 // returns the currently triggered alarm id
 // returns dtINVALID_ALARM_ID if not invoked from within an alarm handler
