@@ -200,7 +200,7 @@ void TimeAlarmsClass::pause(AlarmID_t id)
 
 void TimeAlarmsClass::play(AlarmID_t id)
 {
-	if(Alarm[id].Mode.alarmType == dtTimer && isPaused(id)){
+	if(isPaused(id)){
 		Alarm[id].Mode.isPaused = 0;
 		enable(id);
 	}	
